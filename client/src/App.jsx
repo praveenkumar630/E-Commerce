@@ -16,17 +16,42 @@ import ShoppingCheckout from "./pages/shopping-view/checkout";
 import CheckAuth from "./components/common/check-auth";
 import UnauthPage from "./pages/unauth-page";
 import AdminDashboard from "./pages/admin-view/dashboard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { checkAuth } from "./store/auth-slice";
+import { Skeleton } from "@/components/ui/skeleton";
+import AdminProducts from "./pages/admin-view/products";
+import PaypalReturnPage from "./pages/shopping-view/paypal-return";
+import PaymentSuccessPage from "./pages/shopping-view/payment-success";
+import SearchProducts from "./pages/shopping-view/search";
 
 function App() {
-  
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
 
-  const {user, isAuthenticated} = useSelector((state) => state.auth);
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
+  if (isLoading)
+    return <Skeleton className="w-[800px] bg-black h-[600px] rounded-full" />;
+
+  console.log(isLoading, user);
+
   return (
     <div className="flex flex-col overflow-hidden bg-white">
-      <h1>Header component</h1>
-
       <Routes>
+        <Route
+          path="/"
+          element={
+            <CheckAuth
+              isAuthenticated={isAuthenticated}
+              user={user}
+            ></CheckAuth>
+          }
+        />
         <Route
           path="/auth"
           element={
@@ -50,7 +75,7 @@ function App() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="features" element={<AdminFeatures />} />
-          <Route path="sidebar" element={<AdminSidebar />} />
+          <Route path="products" element={<AdminProducts />} />
         </Route>
 
         <Route
@@ -62,12 +87,14 @@ function App() {
           }
         >
           <Route path="home" element={<ShoppingHome />} />
-          <Route path="list" element={<ShoppingListing />} />
+          <Route path="listing" element={<ShoppingListing />} />
           <Route path="account" element={<ShoppingAccount />} />
           <Route path="checkout" element={<ShoppingCheckout />} />
+          <Route path="paypal-return" element={<PaypalReturnPage />} />
+          <Route path="paypal-success" element={<PaymentSuccessPage />} />
+          <Route path="search" element={<SearchProducts />} />
         </Route>
 
-        {/* <Route path="/" element={<Navigate to="/auth/register" replace />} /> */}
         <Route path="*" element={<NotFound />} />
         <Route path="/unauth-page" element={<UnauthPage />} />
       </Routes>

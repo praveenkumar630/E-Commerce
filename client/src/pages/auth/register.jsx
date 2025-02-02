@@ -3,7 +3,6 @@ import { registerFormControls } from "@/config";
 import { useToast } from "@/hooks/use-toast";
 import { registerUser } from "@/store/auth-slice";
 import { Variable } from "lucide-react";
-// import registerFormControls from "../../config/index";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -56,7 +55,7 @@ const AuthRegister = () => {
         </p>
       </div>
       <CommonForm
-        formControls={registerFormControls()}
+        formControls={registerFormControls}
         buttonText={"Sign Up"}
         formData={formData}
         setFormData={setFormData}

@@ -1,10 +1,10 @@
 import CommonForm from "@/components/common/form";
-import { loginFormControls } from "../../config/index";
 import React, { useState } from "react";
 import { data, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/store/auth-slice";
 import { useToast } from "@/hooks/use-toast";
+import { loginFormControls } from "@/config";
 
 const initialState = {
   email: "",
@@ -49,7 +49,7 @@ const AuthLogin = () => {
         </p>
       </div>
       <CommonForm
-        formControls={loginFormControls()}
+        formControls={loginFormControls}
         buttonText={"Sign In"}
         formData={formData}
         setFormData={setFormData}
